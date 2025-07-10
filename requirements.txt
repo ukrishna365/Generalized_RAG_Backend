@@ -1,0 +1,10 @@
+lightrag
+psycopg2-binary
+torch
+transformers
+pdfplumber
+python-docx
+python-pptx
+Pillow
+tqdm
+rich
