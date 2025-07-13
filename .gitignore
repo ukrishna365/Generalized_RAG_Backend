@@ -1,6 +1,10 @@
 # Ignore venv
 venv/
 .venv/
+venv_wsl/
+.venv_wsl/
+venv_lightRAG/
+.venv_lightRAG/
 
 # Ignore env
 .env
@@ -11,3 +15,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.egg-info/
+
+
+#LightRag Repo
+LightRag/
