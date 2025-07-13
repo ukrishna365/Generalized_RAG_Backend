@@ -1,0 +1,21 @@
+# Ignore venv
+venv/
+.venv/
+venv_wsl/
+.venv_wsl/
+venv_lightRAG/
+.venv_lightRAG/
+
+# Ignore env
+.env
+
+# Ignore Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+
+#LightRag Repo
+LightRag/
