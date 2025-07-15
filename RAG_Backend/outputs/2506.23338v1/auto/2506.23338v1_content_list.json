@@ -1,0 +1,477 @@
+[
+    {
+        "type": "text",
+        "text": "Low-temperature AFM with a microwave cavity optomechanical transducer ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Ermes Scarano∗1, Elisabet K. Arvidsson1, August K. Roos1, Erik Holmgren1, Riccardo Borgani2, Mats O. Tholén2 and David B. Haviland1 ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Address: 1Department of Applied Physics, KTH Royal Institute of Technology, Hannes Alfvéns väg 12, SE-114 19 Stockholm, Sweden and 2Intermodulation Products AB, SE-823 93 Segersta, Sweden ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Email: Ermes Scarano - ermes@kth.se ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "∗ Corresponding author ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "We demonstrate AFM imaging with a microcantilever force transducer where an integrated superconducting microwave resonant circuit detects cantilever deflection using the principles of cavity optomechanics. We discuss the detector responsivity and added noise pointing to its crucial role in the context of force sensitivity. Through analysis of noise measurements we determine the effective temperature of the cantilever eigenmode and we determine the region of detector operation in which the sensor is thermal-noise limited. Our analysis shows that the force-sensor design is a significant improvement over piezoelectric force sensors commonly used in low-temperature AFM. We discuss the potential for further improvement of the sensor design to achieve optimal detection at the standard quantum limit. We demonstrate AFM operation with surface-tracking feedback in both amplitude-modulation and frequency-modulation modes. ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Keywords ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "cavity optomechanics; atomic force microscopy ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Introduction ",
+        "text_level": 1,
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The past two decades have seen the emergence of a variety of remarkable microscopic and mesoscopic optomechanical devices. Through innovative design and fabrication, new record values of fundamental figures of merit have been reported at a surprisingly rapid rate. The field is now mature for the next challenge – application-ready devices. Optomechanical interaction has been proposed to enable or improve many applications [1], including accelerometers [2], tests of quantum gravity [3-5], force microscopy [6,7], magnetometry [8] and quantum state transfer [9]. In some cases further improvement on fundamental figures of merit is required, while in other cases the difficulty lies in balancing trade-offs to find an optimal design which fulfills the specific requirements of the application. The latter is indeed the case for force sensing in atomic force microscopy (AFM). Force transduction at maximum sensitivity requires detecting the position of a “test mass”, while minimizing the added noise introduced by the detection itself [10,11]. The challenge for high-resolution AFM is designing such a detector for a force transducer hosting a sharp tip and scanning over a surface in ultra-high vacuum and at ultra-low temperature. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "In this paper we report on an AFM cantilever force sensor with an integrated superconducting microwave resonant circuit. Using the principles of cavity optomechanics [12], we detect the deflection of the cantilever from its equilibrium position as a shift of the microwave resonance. We briefly summarize the operating principle of the force sensor based on kinetic-inductive electromechanical coupling (KIMEC), whose design and fabrication were already presented in detail in previous publications by our group [13,14]. Here we focus on the deployment of the force sensor, demonstrating force-gradient sensing and scanning over a test surface at $1 0 \\mathrm { m K }$ in a closed-cycle dilution refrigerator (DR). We operate the microscope with surface-tracking feedback using the two most common imaging modes of dynamic AFM: amplitude modulation (AM-AFM) and frequency modulation (FM-AFM). ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "One of the biggest challenges of operating an AFM in a closed-cycle DR is the pulse tube cryogenic head causing significant wideband mechanical vibrations which can propagate through the cold stages down to the measurement apparatus. However, force sensors with integrated position detectors, as the one presented in this work, do not require free-space optical alignment with a long optical path length. They can therefore be made light and compact, significantly reducing their susceptibility to external vibrations, the complexity of vibration isolation, and their thermal mass. For this prototype we implement a rather simple vibration isolation which, as we will show, is sufficient to demonstrate imaging features in a $1 \\mu \\mathrm { m }$ scan field, but has not been tested to atomic resolution. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Force sensitivity and imaging ",
+        "text_level": 1,
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "The microcantilever in dynamic AFM operates as a resonant force transducer. Each individual eigenmode is described by a mechanical susceptibility $\\chi$ , expressing cantilever deflection $\\zeta$ in response to a force $F$ at the frequency $\\Omega$ ",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "img_path": "images/8f588a4d6b2115eb8df2ba26c9ec88cedc9450d7eb8f03ba984bfa4f96f59828.jpg",
+        "text": "$$\n\\chi ( \\Omega ) = \\frac { \\zeta ( \\Omega ) } { F ( \\Omega ) } = \\frac { 1 } { m _ { \\mathrm { e f f } } ( \\Omega _ { \\mathrm { m } } ^ { 2 } - \\Omega ^ { 2 } + i \\Omega \\Gamma ) } ,\n$$",
+        "text_format": "latex",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "where $\\Omega _ { \\mathrm { m } } = \\sqrt { k / m _ { \\mathrm { e f f } } }$ is the resonance frequency and $\\Gamma = \\eta / m _ { \\mathrm { e f f } }$ the damping rate, with $m _ { \\mathrm { e f f } }$ , $k$ and $\\eta$ respectively the effective mass, stiffness and damping coefficient of the eigenmode. A key figure of merit of a force transducer is its force sensitivity determined by all sources of noise. The total noise can be expressed as the sum of the power spectral densities (PSD) of uncorrelated contributions such as the thermal fluctuations in cantilever deflection $S _ { \\zeta \\zeta } ^ { \\mathrm { c a n t } } ( \\Omega ) [ \\mathrm { m } ^ { 2 } / \\mathrm { H z } ]$ at the effective mode temperature $T$ , and the frequency-independent added noise of the detection $S _ { \\mathrm { { V V } } } [ \\mathrm { { V } } ^ { 2 } / \\mathrm { { H z } ] }$ which is converted to an equivalent deflection noise $S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } }$ via the detector responsivity $\\alpha [ \\mathrm { V } / \\mathrm { m } ]$ ",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "img_path": "images/d466b637082ae304fa39ece65b91817e0e3128f75c0e103c6144a3ea743174de.jpg",
+        "text": "$$\nS _ { \\zeta \\zeta } ^ { \\mathrm { t o t } } ( \\Omega ) = S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } + S _ { \\zeta \\zeta } ^ { \\mathrm { c a n t } } ( \\Omega ) = \\frac { S _ { \\mathrm { V V } } } { \\alpha ^ { 2 } } + 2 k _ { B } T \\eta | \\chi ( \\Omega ) | ^ { 2 } .\n$$",
+        "text_format": "latex",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "The noise-equivalent force for a given measurement bandwidth $\\Delta f$ is given by, ",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "img_path": "images/832e3498607dcf6e2d8d4ebf5bb33c1dbaac08457a4153b1f910b3e12cb71f1f.jpg",
+        "text": "$$\nF _ { \\mathrm { N } } ( \\Omega ) = \\left( \\int _ { \\Omega - \\pi \\Delta f } ^ { \\Omega + \\pi \\Delta f } \\frac { S _ { \\zeta \\zeta } ^ { \\mathrm { t o t } } ( \\Omega ) } { | \\chi ( \\Omega ) | ^ { 2 } } \\frac { d \\Omega } { 2 \\pi } \\right) ^ { 1 / 2 } .\n$$",
+        "text_format": "latex",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "This quantity is minimized at the mechanical resonance frequency, where $| \\chi ( \\Omega _ { m } ) | ^ { 2 } = m _ { \\mathrm { e f f } } / k \\eta ^ { 2 }$ , resulting in a minimum detectable force, ",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "img_path": "images/2a14dab9ecf49af42991bd8ddb771e9364dde4f51861aebd712de5595325d254.jpg",
+        "text": "$$\nF _ { \\mathrm { m i n } } = F _ { \\mathrm { N } } ( \\Omega _ { \\mathrm { m } } ) \\approx \\sqrt { \\left( \\frac { S _ { \\mathrm { V V } } k \\eta ^ { 2 } } { \\alpha ^ { 2 } m _ { \\mathrm { e f f } } } + 2 k _ { B } T \\eta \\right) \\Delta f } .\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "It is worth noting that eq. (4) clarifies a recurring misconception. Decreasing stiffness $k$ does not necessarily reduce $F _ { \\mathrm { m i n } }$ . Rather, it relaxes the constraint on the detector’s added noise for the force sensor to operate in the thermal-limited regime $S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } ~ \\ll ~ S _ { \\zeta \\zeta } ^ { \\mathrm { c a n t } } ( \\Omega _ { m } )$ , where $F _ { \\mathrm { m i n } } ~ \\simeq ~ \\sqrt { 2 k _ { \\mathrm { B } } T \\eta \\Delta f }$ . Achieving this limit can be especially challenging at cryogenic temperatures. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Mamin et al. achieved a record force sensitivity of $0 . 8 2 \\mathrm { a N } / \\sqrt { \\mathrm { H z } }$ using a cantilever with $\\Omega _ { \\mathrm { m } } ~ =$ $5 \\mathrm { k H z }$ and stiffness $k = 2 6 0 \\mu \\mathrm { N } / \\mathrm { m }$ at $T = 1 1 0 \\mathrm { m K }$ [15]. AFM usually requires stiffness on the order of $1 0 0 \\mathrm { N / m }$ to avoid the tip jumping to contact and sticking to the surface [16]. Such stiffness would necessitate five orders of magnitude improvement in detector noise to achieve an equivalent force sensitivity. Reduction of detection noise is therefore critical for improving low temperature AFM. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "AFM sensor and detection principle ",
+        "text_level": 1,
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The advantages of cavity optomechanical detection for AFM sensors were already showcased by Liu et al. [7], who implemented a whispering gallery mode toroidal optical cavity coupled through its evanescent field to a doubly-clamped beam with a tip in the middle. We replace the optical cavity with a superconducting microwave resonant circuit which is comparatively easy to fabricate and to integrate on an AFM cantilever with a tip at the free end. Figure 1(a)–(c) shows a scanning electron micrograph of the probe. The triangular cantilever is a Si-N plate released from a Si substrate. The microwave superconducting lumped-element resonant circuit consists of an inter-digital capacitor in series with a meandering nanowire inductor, both fabricated from a single layer of Nb-Ti-N deposited on the Si-N. The nanowire meanders across the clamping edge of the plate, giving rise to a modulation of its kinetic inductance due to surface strain generated by cantilever bending. A Pt-C tip with curvature radius $< ~ 1 0 \\mathrm { n m }$ at its apex is formed at the free end of the cantilever through a series of electron-beam-assisted depositions. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 4
+    },
+    {
+        "type": "image",
+        "img_path": "images/6b9f7762e7c1b131e07f09a9f02e59b6017670baf3a85091da8ca37c45e70483.jpg",
+        "image_caption": [
+            "Figure 1: (a)–(c) Scanning electron micrograph of the probe, featuring a Si-N triangular cantilever released from the Si substrate, hosting an integrated lumped-element LC resonator realized from a single layer of Nb-Ti-N and a $\\mathrm { P t } \\mathrm { - } \\mathbf { C }$ tip deposited at the cantilever apex. (d) Experimental setup. The scanner box is suspended from the $1 0 \\mathrm { m K }$ stage with soft springs. Folded copper braids provide thermalization and additional mechanical damping. The digital synthesizer and analyzer (Presto platform by Intermodulation Products AB) provides the DC output to control the scanner, the radio-frequency drive for the piezo shaker and the microwave multifrequency lock-in modulation/demodulation. "
+        ],
+        "image_footnote": [],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Figure 1(d) shows a schematic of the experimental setup implementing a standard low-noise cryogenic microwave reflection measurement of the sensor, which is mounted in a prototype AFM suspended with three springs from the $1 0 \\mathrm { m K }$ plate of the DR. The microscope consists of a metallic box which supports the scanner and a printed-circuit board to which the sensor is mounted. This custom board also hosts a piezoelectric inertial actuator (shaker) which drives the cantilever oscillation. A test surface is mounted on top of the open-loop scanner stack consisting of a $z$ -positioner for coarse approach and an open loop ??????-scanner for fine positioning (Attocube anpz 102/LT/HV, ansxyz 100/LT/HV). Twisted pairs and coaxial cables are coiled to make springy electrical connections to the AFM. Thermal anchoring of the various parts is achieved by copper braids with multiple zig-zag folds. At room temperature the resonance frequency of the AFM’s suspension system is roughly $1 \\mathrm { H z }$ , with a quality factor of roughly 2. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Mechanical oscillation of the tip causes phase modulation of the reflected microwave pump, detected as motional sidebands in the signal spectrum. Measuring the microwave response at a sideband, the detection responsivity $\\alpha \\ [ \\mathrm { V } / \\mathrm { m } ]$ can be expressed as ",
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "img_path": "images/20cb764ff7510d1e66f3d55b865695ca95a2ccd54677af5e07d62a5e5e125e68.jpg",
+        "text": "$$\n\\alpha = \\sqrt { Z _ { 0 } G ^ { 2 } \\left( \\frac { P _ { \\mathrm { i n } } } { \\hbar \\omega _ { \\mathrm { p } } } \\frac { \\kappa _ { \\mathrm { e x } } } { \\kappa ^ { 2 } / 4 + \\Delta ^ { 2 } } \\right) \\frac { \\kappa _ { \\mathrm { e x } } } { ( \\kappa / 2 ) ^ { 2 } + ( \\Delta + \\Omega ) ^ { 2 } } } = \\sqrt { Z _ { 0 } G ^ { 2 } n _ { \\mathrm { c } } \\frac { \\kappa _ { \\mathrm { e x } } } { ( \\kappa / 2 ) ^ { 2 } + ( \\Delta + \\Omega ) ^ { 2 } } }\n$$",
+        "text_format": "latex",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "where $G = \\partial \\omega _ { 0 } / \\partial \\zeta [ \\mathrm { H z / m } ]$ is the electromechanical coupling coefficient, $\\kappa _ { e x }$ the external loss rate and $\\pmb { K }$ the total loss rate of the microwave resonance, and $Z _ { 0 }$ the characteristic impedance of the transmission line. The term in the first parenthesis is the circulating power or energy stored in the cavity, expressed as the intracavity photon number $n _ { \\mathrm { c } }$ . We control $n _ { \\mathrm { c } }$ through the drive power of the pump $P _ { \\mathrm { i n } }$ and the detuning from the cavity resonance frequency $\\Delta = \\omega _ { \\mathrm { p } } - \\omega _ { 0 }$ . In principle, arbitrarily large responsivity $\\alpha$ is achieved for arbitrary weak coupling $G$ by increasing $P _ { \\mathrm { i n } }$ . In practice, nonlinear effects emerge at large $n _ { \\mathrm { c } }$ , such as heating (nonlinear loss) and resonance-frequency shift (Kerr nonlinearity), which cause the linear response picture of cavity optomechanics to break down. ",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Detection noise in the cavity optomechanical scheme is determined by quantum fluctuations of $n _ { \\mathrm { c } }$ , or photon shot noise. Using eq. (5) for the responsivity $\\alpha$ we can convert this detection noise to an equivalent mechanical displacement noise or imprecision noise, inversely proportional to $n _ { \\mathrm { c } }$ , ",
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "img_path": "images/8da674d28ff93c4f9196dd648c6a0eef9e28cce95eedd2a6e0e8e2216266d3c9.jpg",
+        "text": "$$\nS _ { \\zeta \\zeta } ^ { \\mathrm { i m p } } ( \\Omega ) = \\frac { \\zeta _ { \\mathrm { z p f } } ^ { 2 } } { 4 g _ { 0 } ^ { 2 } n _ { \\mathrm { c } } } \\left( \\frac { \\kappa ^ { 2 } / 4 + ( \\Omega + \\Delta ) ^ { 2 } } { \\kappa _ { \\mathrm { e x } } } \\right) .\n$$",
+        "text_format": "latex",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Here we introduce the single photon coupling rate $g _ { 0 } = G \\zeta _ { \\mathrm { z p f } }$ , corresponding to the microwave resonance frequency shift associated with the quantum zero-point motion of the mechanical mode $\\zeta _ { \\mathrm { z p f } } = \\sqrt { \\hbar / 2 m _ { \\mathrm { e f f } } \\Omega _ { \\mathrm { m } } }$ . The cavity optomechanical measurement also introduces a fluctuating radia",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "tion pressure force on the test mass or back-action noise, proportional to $n _ { \\mathrm { c } }$ [17,18] ",
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "img_path": "images/76d396c5791374f2c65c02c062bed07767981dc963bb816a1241d07fcb951917.jpg",
+        "text": "$$\nS _ { \\zeta \\zeta } ^ { \\mathrm { B A } } ( \\Omega ) = \\frac { \\hbar ^ { 2 } g _ { 0 } ^ { 2 } n _ { \\mathrm { c } } } { \\zeta _ { \\mathrm { z p f } } ^ { 2 } } \\left( \\frac { \\kappa _ { \\mathrm { e x } } } { \\kappa ^ { 2 } / 4 + ( \\Omega + \\Delta ) ^ { 2 } } \\right) \\left| \\chi ( \\Omega ) \\right| ^ { 2 } .\n$$",
+        "text_format": "latex",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "When the microwave pump frequency is detuned by $\\Delta = - \\Omega _ { \\mathrm { m } }$ , and the mechanical mode is measured on resonance $\\Omega \\ = \\ \\Omega _ { \\mathrm { m } }$ where $| \\chi ( \\Omega _ { \\mathrm { m } } ) | ~ = ~ 2 \\zeta _ { \\mathrm { z p f } } ^ { 2 } / \\hbar \\Gamma$ , detector noise is minimized when $S _ { \\zeta \\zeta } ^ { \\mathrm { i m p } } = S _ { \\zeta \\zeta } ^ { \\mathrm { B A } }$ , where ",
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "img_path": "images/3811edae4f596459db77af82748a944a5f387d26509e78aca532535a7c5727a4.jpg",
+        "text": "$$\nn _ { \\mathrm { c } } = n _ { \\mathrm { c } } ^ { \\mathrm { S Q L } } = \\frac { \\Gamma } { 4 g _ { 0 } ^ { 2 } } \\frac { \\kappa ^ { 2 } / 4 } { \\kappa _ { \\mathrm { e x } } } .\n$$",
+        "text_format": "latex",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "If the mechanical oscillator is cooled to a very low temperature, so that it is in its quantum ground state, a measurement at $n _ { c } ^ { \\mathrm { S Q L } }$ gives $S _ { \\zeta \\zeta } ^ { \\mathrm { S Q L } } ( \\Omega _ { \\mathrm { m } } ) = 2 \\zeta _ { \\mathrm { z p f } } ^ { 2 } / \\Gamma$ , the so-called standard quantum limit (SQL). In an actual experiment components after the cavity in the measurement chain introduce additional imprecision noise, expressed as an added number of noise photons $n _ { \\mathrm { a d d } }$ ",
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "img_path": "images/6f0df7ef449366d0173b6c83bb39ae9435883f8021ffad53360d51a5e86c25b9.jpg",
+        "text": "$$\nS _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } = S _ { \\zeta \\zeta } ^ { \\mathrm { i m p } } ( 1 + 2 n _ { \\mathrm { a d d } } ) + S _ { \\zeta \\zeta } ^ { \\mathrm { B A } } .\n$$",
+        "text_format": "latex",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "The added noise in our setup [Figure 1(d)] is determined by the cryogenic low-noise amplifier (LNA) mounted at the $4 \\mathbf { K }$ stage. We use Planck spectroscopy to calibrate our LNA, where we measure $n _ { \\mathrm { a d d } } ~ \\approx ~ 1 4$ at 4.5 GHz [19,20]. The addition of a near quantum-limited amplifier (e.g. a Josephson parametric amplifier) as the first stage in the amplification chain, where $n ^ { \\mathrm { a d d } } \\approx 1 / 2$ , is a commonly adopted solution to reduce detection noise [21]. ",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Sensor characterization ",
+        "text_level": 1,
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Table 1 summarizes the device parameters for three different probes employed in this work, measured at $1 0 \\mathrm { m K }$ in free space far from the surface. We characterize the sensor by measuring the total noise of the undriven mechanical resonance, upconverted to the microwave spectrum. Figure 2(a) shows the data for Probe 1, obtained by converting the measured upper motional sideband to an equivalent displacement PSD $S _ { \\zeta \\zeta } ^ { \\mathrm { t o t } }$ through eq. (5) with $\\Delta = - \\Omega _ { \\mathrm { m } }$ and $n _ { \\mathrm { c } } = 1 . 9 8 \\times 1 0 ^ { 6 }$ . Fitting eq. (2) to the measured data we extract the detector (red) and cantilever (orange) contributions to the total noise. Through this fitting procedure we determine an effective temperature of the cantilever $T = 0 . 7 4 { \\mathrm { K } }$ , which is substantially higher than the bath temperature $T _ { \\mathrm { b a t h } } = 1 0 \\mathrm { m K }$ . The discrepancy is most likely due to inertial actuation by noise from the piezo shaker and decoupling of the cantilever eigenmode from the thermal bath. ",
+        "page_idx": 6
+    },
+    {
+        "type": "table",
+        "img_path": "images/cc8e6d5513c3c4c6f576f66e5201dbdbfa7e9081e8571b00d5b98a671b486652.jpg",
+        "table_caption": [
+            "Table 1: Device parameters $\\Omega _ { m }$ and $\\Gamma$ are determined by fitting the measured mechanical resonance. $\\omega _ { 0 }$ , $\\pmb { K }$ and $\\kappa _ { \\mathrm { e x } }$ are determined by fitting to the measured microwave resonance, while $m _ { \\mathrm { e f f } }$ and $G$ are determined from FEM simulations [14]. "
+        ],
+        "table_footnote": [],
+        "table_body": "<html><body><table><tr><td>Probe</td><td>2m (MHz)</td><td>Γ (HZ)</td><td>mef (pg)</td><td>ω0 (GHz)</td><td>K (MHz)</td><td>Kex (MHZ)</td><td>G (kHz/nm)</td></tr><tr><td>1</td><td>5.669</td><td>15</td><td>47</td><td>4.27</td><td>3.38</td><td>3.04</td><td>24.92</td></tr><tr><td>2</td><td>4.963</td><td>5</td><td>61</td><td>4.64</td><td>1.03</td><td>0.64</td><td>24.56</td></tr><tr><td>3</td><td>5.881</td><td>45</td><td>44</td><td>4.40</td><td>4.54</td><td>4.04</td><td>28.98</td></tr></table></body></html>",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/f01827ab1defeb495623c4eb2407012e7111fcf26c3c0ce2faa16b704bdd0f1c.jpg",
+        "image_caption": [
+            "Figure 2: (a) Detector output noise equivalent displacement PSD and individual contributions. (b) Noise contributions evaluated at the mechanical resonance as a function of the average circulating photon number $n _ { \\mathrm { c } }$ . The detector noise (solid red line) accounts for the intracavity ground state fluctuations (dashed red line), back action noise (dash-dot red line) and the added noise of the first stage of amplification. The horizontal line marks the fluctuations of the cantilever at its effective mode temperature. The solid and dashed black curves describe the total noise of the sensor for various cantilever mode temperatures. "
+        ],
+        "image_footnote": [],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Figure 2(b) shows various contributions to the noise of Probe 1 as a function of $n _ { \\mathrm { c } }$ . The light blue area marks the range of operation of this sensor, where Kerr nonlinear response of the superconducting resonant circuit [22] limits $n _ { \\mathrm { c } } < 2 . 0 \\times 1 0 ^ { 6 }$ , well below $n _ { \\mathrm { c } } ^ { \\mathrm { S Q L } } \\approx 1 . 4 \\times 1 0 ^ { 8 }$ . It is possible to achieve operation closer to $n _ { \\mathrm { c } } ^ { \\mathrm { S Q L } }$ by improving the sensor design. ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "For a given $g _ { 0 }$ and $\\Gamma$ we can decrease $n _ { \\mathrm { c } } ^ { \\mathrm { S Q L } }$ by reducing the external loss rate $\\kappa _ { \\mathrm { e x } }$ and the total loss rate $\\pmb { K }$ . We can control $\\kappa _ { \\mathrm { e x } }$ through design of the resonator coupling to the readout transmission line [14]. Decreasing $\\pmb { K }$ also requires improvement on the internal loss rate of the cavity $\\kappa _ { 0 } = \\kappa { - } \\kappa _ { \\mathrm { e x } }$ With typical parameters for our sensors $\\kappa _ { \\mathrm { e x } } / 2 \\pi = 1 \\mathrm { M H z } , \\Gamma / 2 \\pi = 1 0 \\mathrm { H z } , g _ { 0 } / 2 \\pi = 0 . 1 4 \\mathrm { H z } ,$ we find a value of $n _ { c } ^ { \\mathrm { S Q L } } \\approx 3 1 . 8 \\times 1 0 ^ { 6 }$ photons, which would require a factor 15 improvement on $\\kappa _ { 0 }$ . Achieving this improvement is quite reasonable as our microwave resonators exhibit a $\\kappa _ { 0 }$ far larger than the typical values reported in the literature [23-25]. The main limitation to the internal quality factor of our microwave resonators is the highly-disordered low-stress Si-N layer, which causes significant dielectric losses [26]. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "As discussed above, the figure of merit of a displacement detector should be evaluated with respect to the fluctuations of the specific mechanical resonator that is measuring force. In this regard, it is informative to define the crossover temperature $T ^ { * }$ , or effective mode temperature of the mechanical resonator, at which $S _ { \\zeta \\zeta } ^ { \\mathrm { c a n t } } ( \\Omega _ { \\mathrm { m } } ) = S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } }$ . When the mechanical mode temperature $T > T ^ { * }$ , the noise is dominated by mechanical displacement noise and the force measurement is at the thermal limit. When $T < T ^ { * }$ , the measurement is dominated by detector noise and improvements to displacement detection will improve force sensitivity. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Piezoelectric sensors with transimpedance amplifier detectors as reported by Giessibl et. al. [27] exhibit $S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } = 6 2 \\mathrm { f m } / \\sqrt { \\mathrm { H z } }$ giving $T ^ { * } = 1 0 \\mathrm { K }$ for tuning forks, and $S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } = 1 . 8 9 \\mathrm { f m } / \\sqrt { \\mathrm { H z } }$ , giving $T ^ { * } =$ 21 K for length-extensional resonators. Optimized optical-beam deflection detectors as reported by Fukuma et al. [28] exhibit $S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } = 1 7 \\mathrm { f m } / \\sqrt { \\mathrm { H z } }$ , $T ^ { * } = 1 . 2 \\mathsf { K }$ . For comparison, from measurements on Probe 1 shown in Figure 2(a), we obtain a lower crossover temperature $T ^ { * } = 0 . 4 3 \\mathrm { K }$ , despite the fact that the sensor operates below its optimal point. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "AFM operation ",
+        "text_level": 1,
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "The noise-to-noise ratio $S _ { \\zeta \\zeta } ^ { \\mathrm { c a n t } } / S _ { \\zeta \\zeta } ^ { \\mathrm { d e t } } = T / T ^ { * }$ provides a qualitative measure of the pixel acquisition rate, or measurement bandwidth $\\Delta f$ , above which force sensitivity is degraded by detector noise. For FM-AFM this bandwidth is $\\Delta f = \\Gamma ( T / T ^ { * } )$ where as AM-AFM requires $\\Delta f \\le \\Gamma$ . Force sensitivity is however only one aspect of a high-performance AFM. Ultimately the image speed and resolution, both vertical and lateral, are influenced by many factors: equilibrium tip-surface distance, oscillation amplitude of the driven cantilever, sharpness of the tip, and pickup of environmental vibrations and noise, such as noise from the actuator driving the cantilever oscillation as well as feedback noise and sample topography. ",
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/fd3fa38bdc8b558aca0e3a9f0485c65490bc1755004667b10665893dad30159a.jpg",
+        "image_caption": [
+            "Figure 3: Magnitude (a) and phase (b) of the microwave resonator’s reflection coefficient $S _ { 1 1 }$ measured during coarse approach. Proximity to the surface causes a non-negligible shift in the microwave resonance frequency (c) and increase in the total loss rate (d). (e) Effect of force gradient on the mechanical susceptibility of the cantilever close to the surface. (f) Mechanical resonance frequency shift vs. tip-surface distance curve. "
+        ],
+        "image_footnote": [],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "We perform initial positioning of the microscope by driving the coarse $z$ -positioner with the Attocube ANC-300 control unit that provides the $6 0 \\mathrm { V }$ saw-tooth pulses to the piezo actuators. The stick-slip motion of the actuator under high-voltage saw-tooth pulses $( \\approx 5 0 \\mathrm { n m / s t e p } )$ produces significant heating at the $1 0 \\mathrm { m K }$ stage. Under continuous operation, the heating power is of the or",
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "der of $1 \\mu \\mathrm { W }$ for an approach speed of $1 \\mu \\mathrm { m / m i n }$ . This temperature change during coarse approach causes drift in the cantilever’s resonance frequency, requiring a couple of minutes to restore a stable configuration. Therefore, during coarse approach we monitor only the microwave resonance. When approaching the sample surface we observe a shift $( < 2 \\% )$ ) of the microwave resonance frequency to lower frequency and a slight increase of the internal losses, as shown in Figure 3(a)–(d). This red-shift suggests that proximity to the surface introduces a lossy capacitive load to the microwave resonant circuit. While slightly degrading the performance of the displacement detector, this effect has the advantage of providing an easily measurable indication of probe-surface separation during coarse approach. For the final stage of the approach, we drive the $z$ -scanner with a DCvoltage ( $\\mathrm { 1 0 0 n m / V } ,$ ) while monitoring both the microwave and cantilever resonances. Figure 3(e)– (f) show the measured frequency shift versus distance, demonstrating force gradient sensing by the KIMEC AFM probe. ",
+        "page_idx": 10
+    },
+    {
+        "type": "image",
+        "img_path": "images/d1f6a58e85972b09fffe26458c1924aa6bb5220f24030363cbf0c1b5dfee33a4.jpg",
+        "image_caption": [
+            "Figure 4: (a) AM-AFM imaging of the calibration grating over a $1 \\mu \\mathrm { m } \\times 1 \\mu \\mathrm { m }$ scan area containing a single vertical stripe with a $1 0 \\mathrm { n m }$ step height. The dashed lines in the image mark the location of the scan lines in (b)–(c). "
+        ],
+        "image_footnote": [],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "We tested the AFM by imaging a nano-fabricated calibration grating over a $1 \\mu \\mathrm { m } \\times 1 \\mu \\mathrm { m }$ scan area with a resolution of 100 pixels/line. In order to track the surface topography while scanning, we developed a proportional-integral-derivative (PID) control firmware running on the embedded real-time processing unit (RPU) of the microwave multifrequency lock-in amplifier (Presto by Intermodulation Products AB). The code is released as open source under the MIT license, and is available online in a repository hosted on GitHub [29]. The feedback system must be able to follow rapid changes in topography while avoiding feedback oscillation. Depending on the mode of operation, AM-AFM or FM-AFM, the PID setpoint and error signal are determined from the amplitude or phase of the motional sideband which is the up-converted cantilever oscillation. The PID control is developed in the Rust programming language, and features low-pass filtering of the derivative action, as well as clamping of the integrator state to prevent integral windup and of the output control to prevent damage to the AFM probe. ",
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 11
+    },
+    {
+        "type": "image",
+        "img_path": "images/0f4db4d7e0552c714c8e237cecd2fe3a8c87f6ed6fa572ddcaffbc0245b57427.jpg",
+        "image_caption": [
+            "Figure 5: (a) FM-AFM imaging (trace) of the calibration grating over a $1 \\mu \\mathrm { m } \\times 0 . 8 \\mu \\mathrm { m }$ scan area. (b)–(c) Average and standard deviation over ten consecutive acquisitions of a single scan line at constant $y$ -position in both trace (b) and retrace (c) scan direction. (d)–(f) Single scan line measured with different pixel acquisition rates $\\Delta f$ . "
+        ],
+        "image_footnote": [],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "We operate Probe 2 in AM-AFM mode by driving the cantilever slightly above resonance $\\Omega \\ =$ $\\Omega _ { \\mathrm { m } } + \\Gamma / 2$ . The PID loop controls the $z$ -extension of the scanner to keep oscillation amplitude constant at about $2 0 0 \\mathrm { p m }$ . The blue-detuned cantilever drive ensures that the PI controller retracts the ??-scanner in the event of a sudden drop in the measured signal, thus avoiding crashing the probe into the surface. The image in Figure 4(a) is acquired with a measurement bandwidth of $\\Delta f = 1 . 5 \\mathrm { H z } < \\Gamma$ , corresponding to a scan rate of roughly 67 s/line. The choice of the integral gain is crucial for optimal surface tracking. Too large values of integral gain result in an overly responsive feedback that introduces noise on the topographic image and feedback oscillations. Too low values can lead to instability or loss of surface tracking with abrupt changes in topography. The latter occurred during the scan; in multiple instances the feedback temporarily loses track of the surface immediately after the tip encounters a step. The single scan line on the fast, i.e. $x$ -axis, shown in Figure 4(b)–(c) clearly shows different behavior of trace and retrace scan directions. We achieved faster imaging and improved stability with FM-AFM as shown in Figure 5. FM-AFM requires phase-sensitive detection of tip displacement using a scheme described in detail in earlier publications [13,30]. The cantilever is now driven on resonance at the same $\\simeq 2 0 0 \\mathrm { p m }$ oscillation amplitude while the microwave resonator is driven with two pump tones of equal intensity and symmetrically detuned with $\\Delta = \\pm \\Omega _ { \\mathrm { m } }$ . The lower and upper motional sidebands from the two pumps interfere at $\\omega _ { 0 }$ , resulting in microwave response amplitude which depends on the phase of the mechanical motion [31,32]. The feedback controls the $z$ -extension to maintain a constant microwave response amplitude, or constant mechanical response phase. The tracking of the surface is more consistent using this FM-AFM feedback scheme as shown in Figure 5(b)–(c) by the trace and retrace signals. Figure 5(d)–(f) shows the effect of the measurement bandwidth on a single scan line. ",
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Finally, we tested the lateral resolution of our microscope by imaging a less trivial structure. We fabricated a second test sample by etching a pattern from a $1 0 \\mathrm { n m }$ Ti thin film deposited on a $5 \\mathrm { n m }$ Au layer on a silicon substrate. Each unit cell in the pattern contains different shapes as shown in the SEM image in Figure 6(a). The tapered arms of crosses and ribbons shrink to reach a nominal minimum feature size of $2 0 \\mathrm { n m }$ . Figure 6(b) shows a FM-AFM image of the $1 \\mu \\mathrm { m } \\times 1 \\mu \\mathrm { m }$ scan area corresponding to the inset of Figure 6(a) acquired using Probe 3. ",
+        "page_idx": 12
+    },
+    {
+        "type": "image",
+        "img_path": "images/bb8c294a59812349da084bd348467457f60754c75e255364da5431aed3f9c841.jpg",
+        "image_caption": [
+            "Figure 6: (a) SEM image of the second test sample. The zoomed inset highlights the area imaged with FM-AFM in (b). (c) Fast Fourier transform of the error signal for a single scan line. The $x$ - axis of the plot is converted to frequency through the pixel acquisition rate $\\Delta f = 1 1 2 \\mathrm { H z }$ . (d) Single scan line showing the rippling effect caused by pulse-tube vibrations. The orange curve is obtained by applying a low-pass filter with cutoff frequency $0 . 7 5 \\mathrm { H z }$ . (e) Effect of filtering and smoothing on the acquired image. "
+        ],
+        "image_footnote": [],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Although the various structures can be identified, several scanning artifacts appear in the image. In this particular experiment the probe was especially sensitive to pulse-tube vibrations. Figure 6(c) shows the fast-Fourier transform (FFT) of the error signal for a single horizontal (fast axis) line scan. The component at $0 . 8 \\mathrm { H z }$ and its higher harmonics coincide with periodicity of the pulsetube, resulting in ripples in the height image (feedback signal) as shown in Figure 6(d). In this image we also see distortion and misalignment between consecutive scan lines due to hysteresis and drift in the open loop $x - y$ scanners. These problems are more pronounced when attempting to resolve smaller features, and image processing techniques such as filtering and smoothing are not particularly effective in enhancing resolution, as shown by Figure 6(e). ",
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Conclusion ",
+        "text_level": 1,
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "We have demonstrated ultra-low-temperature AFM operation with a kinetic-inductive electromechanical (KIMEC) force sensor. In comparison with state-of-the-art low-temperature AFM, these initial AFM images are not of particularly high resolution. However, our AFM was built in to a standard pulse-tube dilution refrigerator which was not designed for preparation of pristine surfaces, nor was any attempt made to sharpen the tip in-situ. ",
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Our analysis of force sensitivity showed that residual noise from the actuator and decoupling of the cantilever eigenmode from the thermal bath limited the sensor’s effective temperature to $0 . 7 4 \\mathrm { K }$ , well above the bath temperature of $1 0 \\mathrm { m K }$ . However, our analysis shows that the KIMEC principle of detecting cantilever deflection, as it is implemented in these sensors, is capable of operating at the thermal limit of force sensitivity down to a temperature of $0 . 4 3 \\mathrm { K }$ . This is a significant improvement over much lower frequency piezoelectric transduction methods commonly used for lowtemperature AFM, which can work at the thermal limit down to some $1 0 \\mathrm { K }$ . We estimate that, with reasonable improvements on the current KIMEC sensor design, this detection principle will be capable of operating at the fundamental limit of minimum added noise. Achieving this performance limit is a prerequisite for improved force sensitivity with ultra-low temperature and ultra-low damping mechanical modes. Alternatively, the lower noise of the KIMEC detection principle allows for AFM imaging with increased pixel acquisition rate (measurement bandwidth) without degrading force sensitivity. ",
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Acknowledgements ",
+        "text_level": 1,
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "We acknowledge helpful discussions with Thilo Glatzel. ",
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Funding ",
+        "text_level": 1,
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "The European Union Horizon 2020 Future and Emerging Technologies (FET) Grant Agreement No. 828966 — QAFM and the Swedish SSF Grant No. ITM17–0343 supported this work. ",
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Data availability ",
+        "text_level": 1,
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Data generated and analyzed during this study is openly available in Zenodo at 10.5281/zenodo.   \n15744435. ",
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "References ",
+        "text_level": 1,
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "1. Metcalfe, M. Applied Physics Reviews 2014, 1 (3), .   \n2. Krause, A. G.; Winger, M.; Blasius, T. D.; Lin, Q.; Painter, O. Nature Photonics 2012, 6 (11), 768–772.   \n3. Pikovski, I.; Vanner, M. R.; Aspelmeyer, M.; Kim, M.; Brukner, Č. Nature Physics 2012, 8 (5), 393–397.   \n4. Marletto, C.; Vedral, V. Physical review letters 2017, 119 (24), 240402.   \n5. Krisnanda, T.; Zuppardo, M.; Paternostro, M.; Paterek, T. Physical review letters 2017, 119 (12), 120402.   \n6. Hälg, D.; Gisler, T.; Tsaturyan, Y.; Catalini, L.; Grob, U.; Krass, M.-D.; Héritier, M.; Mattiat, H.; Thamm, A.-K.; Schirhagl, R. et al. Physical Review Applied 2021, 15 (2), L021001.   \n7. Liu, Y.; Miao, H.; Aksyuk, V.; Srinivasan, K. Optics express 2012, 20 (16), 18268–18280.   \n8. Forstner, S.; Sheridan, E.; Knittel, J.; Humphreys, C. L.; Brawley, G. A.; RubinszteinDunlop, H.; Bowen, W. P. Advanced materials (Deerfield Beach, Fla.) 2014, 26 (36), 6348–6353.   \n9. Hill, J. T.; Safavi-Naeini, A. H.; Chan, J.; Painter, O. Nature communications 2012, 3 (1), 1196.   \n10. Braginski˘ı, V. B.; Vorontsov, Y. I. Soviet Physics Uspekhi 1975, 17 (5), 644.   \n11. Smith, D. Review of scientific instruments 1995, 66 (5), 3191–3195.   \n12. Aspelmeyer, M.; Kippenberg, T. J.; Marquardt, F. Reviews of Modern Physics 2014, 86 (4), 1391.   \n13. Roos, A. K.; Scarano, E.; Arvidsson, E. K.; Holmgren, E.; Haviland, D. B. Physical Review Applied 2023, 20 (2), 024022.   \n14. Roos, A. K.; Scarano, E.; Arvidsson, E. K.; Holmgren, E.; Haviland, D. B. Beilstein Journal of Nanotechnology 2024, 15 (1), 242–255.   \n15. Mamin, H.; Rugar, D. Applied Physics Letters 2001, 79 (20), 3358–3360.   \n16. Garcıa, R.; Perez, R. Surface science reports 2002, 47 (6-8), 197–301.   \n17. Bowen, W. P.; Milburn, G. J. Quantum optomechanics; CRC press, 2015.   \n18. Schliesser, A.; Arcizet, O.; Rivière, R.; Anetsberger, G.; Kippenberg, T. J. Nature Physics 2009, 5 (7), 509–514.   \n19. Jolin, S. W.; Andersson, G.; Hernández, J. R.; Strandberg, I.; Quĳandría, F.; Aumentado, J.; Borgani, R.; Tholén, M. O.; Haviland, D. B. Physical Review Letters 2023, 130 (12), 120601.   \n20. Lingua, F.; Rivera Hernández, J. C.; Cortinovis, M.; Haviland, D. B. Phys. Rev. Lett. 2025, 134, 183602. doi:10.1103/PhysRevLett.134.183602.   \n21. Teufel, J. D.; Donner, T.; Li, D.; Harlow, J. W.; Allman, M. S.; Cicak, K.; Sirois, A. J.; Whittaker, J. D.; Lehnert, K. W.; Simmonds, R. W. Nature 2011, 475 (7356), 359–363. ",
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "doi:10.1038/nature10261. ",
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "22. Scarano, E.; Arvidsson, E. K.; Roos, A. K.; Holmgren, E.; Haviland, D. B. Applied Physics Letters 2024, 124 (24), .   \n23. Samkharadze, N.; Bruno, A.; Scarlino, P.; Zheng, G.; DiVincenzo, D.; DiCarlo, L.; Vandersypen, L. Physical Review Applied 2016, 5 (4), 044004.   \n24. Kroll, J. G.; Borsoi, F.; Van Der Enden, K.; Uilhoorn, W.; De Jong, D.; Quintero-Pérez, M.; Van Woerkom, D.; Bruno, A.; Plissard, S.; Car, D. et al. Physical Review Applied 2019, 11 (6), 064053.   \n25. Müller, M.; Luschmann, T.; Faltermeier, A.; Weichselbaumer, S.; Koch, L.; Huber, G. B.; Schumacher, H. W.; Ubbelohde, N.; Reifert, D.; Scheller, T. et al. Materials for Quantum Technology 2022, 2 (1), 015002.   \n26. Mittal, S.; Adachi, K.; Frattini, N. E.; Urmey, M. D.; Lin, S.-X.; Emser, A. L.; Metzger, C.; Talamo, L.; Dickson, S.; Carlson, D. et al. Physical Review Applied 2024, 21 (5), 054044.   \n27. Giessibl, F. J.; Pielmeier, F.; Eguchi, T.; An, T.; Hasegawa, Y. Physical Review B—Condensed Matter and Materials Physics 2011, 84 (12), 125409.   \n28. Fukuma, T.; Kimura, M.; Kobayashi, K.; Matsushige, K.; Yamada, H. Review of Scientific Instruments 2005, 76 (5), .   \n29. Intermodulation Products AB, rpu-qafm GitHub repository. https://github.com/intermod-pro/ rpu-qafm. Accessed: 2024-10-08   \n30. Arvidsson, E. K.; Scarano, E.; Roos, A. K.; Qvarfort, S.; Haviland, D. B. Physical Review A 2024, 110 (4), 043524.   \n31. Suh, J.; Weinstein, A. J.; Lei, C. U.; Wollman, E. E.; Steinke, S. K.; Meystre, P.; Clerk, A. A.; Schwab, K. C. Science 2014, 344 (6189), 1262–1265. doi:10.1126/science.1253258.   \n32. Braginsky, V. B.; Vorontsov, Y. I.; Thorne, K. S. Science 1980, 209 (4456), 547–557. doi:10. 1126/science.209.4456.547. ",
+        "page_idx": 17
+    }
+]
