@@ -1,21 +1,8 @@
-# Ignore venv
-venv/
-.venv/
-venv_wsl/
-.venv_wsl/
-venv_lightRAG/
-.venv_lightRAG/
+# Ignore everything
+/*
 
-# Ignore env
-.env
+# But not these files/directories:
+!RAG_Backend/
+!README.md
+!requirements.txt
 
-# Ignore Python cache and build artifacts
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.egg-info/
-
-
-#LightRag Repo
-LightRag/
