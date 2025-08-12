@@ -18,6 +18,7 @@ from transformers.models.auto.tokenization_auto import AutoTokenizer
 from adapters import AutoAdapterModel
 import torch
 
+DEFAULT_INPUT_DIR = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\RAG_Backend\inputs"
 DEFAULT_OUTPUT_DIR = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\RAG_Backend\outputs"
 
 # Define the LLM function using GPT-4o and the API key from the environment
@@ -110,4 +111,24 @@ def extract_structured_content_sync(filepath: str, output_dir: str = DEFAULT_OUT
     """
     Synchronous wrapper for extract_structured_content.
     """
-    return asyncio.run(extract_structured_content(filepath, output_dir)) 
+    return asyncio.run(extract_structured_content(filepath, output_dir))
+
+# (Add a main block for direct testing)
+if __name__ == "__main__":
+    # Example: process all supported files in the inputs directory
+    SUPPORTED_EXTENSIONS = {'.pdf', '.docx', '.pptx', '.md'}
+    files = [
+        os.path.join(DEFAULT_INPUT_DIR, f)
+        for f in os.listdir(DEFAULT_INPUT_DIR)
+        if os.path.splitext(f)[1].lower() in SUPPORTED_EXTENSIONS
+    ]
+    if not files:
+        print(f"No supported files found in {DEFAULT_INPUT_DIR}.")
+    else:
+        for file_path in files:
+            print(f"Processing: {file_path}")
+            result = extract_structured_content_sync(file_path, DEFAULT_OUTPUT_DIR)
+            if result:
+                print(f"Extraction complete for: {file_path}")
+            else:
+                print(f"Extraction failed for: {file_path}") 

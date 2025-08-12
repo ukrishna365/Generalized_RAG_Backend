@@ -1,6 +1,8 @@
 # --- CONFIGURABLE PATHS (edit these as needed) ---
 INPUT_FOLDER = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\RAG_Backend\inputs"
 OUTPUT_FOLDER = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\RAG_Backend\outputs"
+RAG_STORAGE_DIR = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\rag_storage"
+LIBREOFFICE_PATH = r"C:\Program Files\LibreOffice\program"
 USE_GPU = True  # Set to False to force CPU mode
 # --------------------------------------------------
 
@@ -10,7 +12,27 @@ from typing import Dict, Any, Optional
 import asyncio
 import glob
 import argparse
+import time
+from datetime import datetime
+from contextlib import contextmanager
 import torch
+
+# Lightweight logging helpers
+def _now_str() -> str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def log(message: str) -> None:
+    print(f"[{_now_str()}] {message}")
+
+@contextmanager
+def stage(stage_name: str):
+    start = time.perf_counter()
+    log(f"START {stage_name}")
+    try:
+        yield
+    finally:
+        elapsed = time.perf_counter() - start
+        log(f"END   {stage_name} (took {elapsed:.2f}s)")
 
 try:
     from raganything import RAGAnything, RAGAnythingConfig
@@ -27,20 +49,35 @@ SUPPORTED_EXTENSIONS = {'.pdf', '.docx', '.pptx', '.md'}
 # SPECTER2 embedding and LLM setup
 specter2_model_name = "allenai/specter2_base"
 specter2_adapter = "allenai/specter2"
-tokenizer = AutoTokenizer.from_pretrained(specter2_model_name)
-model = AutoAdapterModel.from_pretrained(specter2_model_name)
-model.load_adapter(specter2_adapter, source="hf", load_as="proximity", set_active=True)
-model.set_active_adapters("proximity")
+with stage("Load tokenizer"):
+    tokenizer = AutoTokenizer.from_pretrained(specter2_model_name)
+with stage("Load base model"):
+    model = AutoAdapterModel.from_pretrained(specter2_model_name)
+with stage("Load & activate adapter"):
+    model.load_adapter(specter2_adapter, source="hf", load_as="proximity", set_active=True)
+    model.set_active_adapters("proximity")
 
 # Set device based on USE_GPU
-if USE_GPU and torch.cuda.is_available():
-    device = torch.device("cuda")
-    model.to(device)
-    print(f"Using GPU: {torch.cuda.get_device_name(0)}")
+with stage("Move model to device"):
+    if USE_GPU and torch.cuda.is_available():
+        device = torch.device("cuda")
+        model.to(device)
+        log(f"Using GPU: {torch.cuda.get_device_name(0)}")
+    else:
+        device = torch.device("cpu")
+        model.to(device)
+        log("Using CPU")
+
+# Print configuration info
+log(f"Using rag_storage at: {RAG_STORAGE_DIR}")
+
+# Set LibreOffice path for subprocesses
+if os.path.exists(LIBREOFFICE_PATH):
+    # Add LibreOffice to environment variables for subprocesses
+    os.environ['PATH'] = LIBREOFFICE_PATH + os.pathsep + os.environ.get('PATH', '')
+    log(f"Added LibreOffice to PATH: {LIBREOFFICE_PATH}")
 else:
-    device = torch.device("cpu")
-    model.to(device)
-    print("Using CPU")
+    log(f"Warning: LibreOffice not found at {LIBREOFFICE_PATH}")
 
 def gpt4o_llm_model_func(prompt, system_prompt=None, history_messages=[], **kwargs):
     api_key = os.getenv("OPENAI_API_KEY")
@@ -54,6 +91,12 @@ def gpt4o_llm_model_func(prompt, system_prompt=None, history_messages=[], **kwar
         api_key=api_key,
         **kwargs
     )
+
+def safe_equation(equation: str) -> str:
+    """Escape backslashes and control characters for JSON safety."""
+    if not isinstance(equation, str):
+        return equation
+    return equation.replace("\\", "\\\\").replace("\n", "\\n").replace("\t", "\\t")
 
 def specter2_embed(texts):
     batch = [{"title": t, "abstract": ""} for t in texts]
@@ -76,36 +119,50 @@ embedding_func = EmbeddingFunc(
 )
 
 async def extract_structured_content(filepath: str, output_dir: str = OUTPUT_FOLDER) -> Optional[Dict[str, Any]]:
+    log(f"Begin extract for: {filepath}")
     if not os.path.exists(filepath):
-        print(f"File not found: {filepath}")
+        log(f"File not found: {filepath}")
         return None
     os.makedirs(output_dir, exist_ok=True)
-    rag = RAGAnything(
-        config=RAGAnythingConfig(working_dir="./rag_storage"),
-        llm_model_func=gpt4o_llm_model_func,
-        embedding_func=embedding_func
-    )
-    try:
-        await rag.process_document_complete(
-            file_path=filepath,
-            output_dir=output_dir,
-            parse_method="auto"
+    with stage("RAGAnything init"):
+        rag = RAGAnything(
+            config=RAGAnythingConfig(working_dir=RAG_STORAGE_DIR),
+            llm_model_func=gpt4o_llm_model_func,
+            embedding_func=embedding_func
         )
-        print("Files in output directory after processing:", os.listdir(output_dir))
+    try:
+        with stage("Process document (parse/convert/extract)"):
+            await rag.process_document_complete(
+                file_path=filepath,
+                output_dir=output_dir,
+                parse_method="auto"
+            )
+        log(f"Files in output directory after processing: {os.listdir(output_dir)}")
         base = os.path.splitext(os.path.basename(filepath))[0]
         output_dir_path = os.path.join(output_dir, base)
         # Recursively search for any .json file in the output directory
-        json_files = glob.glob(os.path.join(output_dir_path, '**', '*.json'), recursive=True)
-        print("Found JSON files:", json_files)
-        if json_files:
-            with open(json_files[0], "r", encoding="utf-8") as f:
-                result = json.load(f)
-            return result
-        else:
-            print(f"No JSON files found in {output_dir_path}")
-            return None
+        with stage("Discover & parse JSON output"):
+            json_files = glob.glob(os.path.join(output_dir_path, '**', '*.json'), recursive=True)
+            log(f"Found JSON files: {json_files}")
+            if json_files:
+                try:
+                    with open(json_files[0], "r", encoding="utf-8") as f:
+                        raw_content = f.read()
+                        try:
+                            result = json.loads(raw_content)
+                        except json.JSONDecodeError as e:
+                            log(f"Error parsing output JSON: {e}")
+                            log(f"Raw JSON content (first 1000 chars): {raw_content[:1000]}")
+                            return None
+                    return result
+                except Exception as e:
+                    log(f"Error reading/parsing JSON output for {filepath}: {e}")
+                    return None
+            else:
+                log(f"No JSON files found in {output_dir_path}")
+                return None
     except Exception as e:
-        print(f"Error extracting structured content from {filepath}: {e}")
+        log(f"Error extracting structured content from {filepath}: {e}")
         return None
 
 def extract_structured_content_sync(filepath: str, output_dir: str = OUTPUT_FOLDER) -> Optional[Dict[str, Any]]:
