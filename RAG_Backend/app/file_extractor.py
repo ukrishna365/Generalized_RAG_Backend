@@ -4,6 +4,15 @@ OUTPUT_FOLDER = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\RAG_Backen
 RAG_STORAGE_DIR = r"C:\Users\kuppa\DS_Projects\Generalized_RAG_Backend3\rag_storage"
 LIBREOFFICE_PATH = r"C:\Program Files\LibreOffice\program"
 USE_GPU = True  # Set to False to force CPU mode
+
+# Performance tuning parameters
+PROCESSING_TIMEOUT = 600  # 10 minutes timeout for document processing
+MAX_RETRIES = 1  # Number of retries for failed processing
+SKIP_EQUATION_ANALYSIS = True  # Skip equation analysis for PPTX files to avoid JSON errors
+EMBEDDING_BATCH_SIZE = 2  # Reduced batch size to avoid OpenAI rate limits (was 16)
+
+# OpenAI configuration
+OPENAI_MODEL = "gpt-4o"  # Primary model
 # --------------------------------------------------
 
 import os
@@ -16,6 +25,7 @@ import time
 from datetime import datetime
 from contextlib import contextmanager
 import torch
+import signal
 
 # Lightweight logging helpers
 def _now_str() -> str:
@@ -63,6 +73,9 @@ with stage("Move model to device"):
         device = torch.device("cuda")
         model.to(device)
         log(f"Using GPU: {torch.cuda.get_device_name(0)}")
+        # Clear GPU cache and set memory management
+        torch.cuda.empty_cache()
+        log(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f}GB total")
     else:
         device = torch.device("cpu")
         model.to(device)
@@ -83,14 +96,33 @@ def gpt4o_llm_model_func(prompt, system_prompt=None, history_messages=[], **kwar
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise ValueError("OPENAI_API_KEY not set in environment.")
-    return openai_complete_if_cache(
-        "gpt-4o",
-        prompt,
-        system_prompt=system_prompt,
-        history_messages=history_messages,
-        api_key=api_key,
-        **kwargs
-    )
+    
+    # Add rate limit handling
+    max_retries = 3
+    base_delay = 1.0
+    
+    for attempt in range(max_retries):
+        try:
+            return openai_complete_if_cache(
+                OPENAI_MODEL,
+                prompt,
+                system_prompt=system_prompt,
+                history_messages=history_messages,
+                api_key=api_key,
+                **kwargs
+            )
+        except Exception as e:
+            if "quota" in str(e).lower() or "429" in str(e):
+                log(f"OpenAI quota exceeded (attempt {attempt + 1}/{max_retries})")
+                if attempt == max_retries - 1:
+                    log("Max retries reached for OpenAI API. Check your billing and quota limits.")
+                    raise
+                # Exponential backoff
+                delay = base_delay * (2 ** attempt)
+                log(f"Waiting {delay}s before retry...")
+                time.sleep(delay)
+            else:
+                raise
 
 def safe_equation(equation: str) -> str:
     """Escape backslashes and control characters for JSON safety."""
@@ -99,14 +131,42 @@ def safe_equation(equation: str) -> str:
     return equation.replace("\\", "\\\\").replace("\n", "\\n").replace("\t", "\\t")
 
 def specter2_embed(texts):
-    batch = [{"title": t, "abstract": ""} for t in texts]
-    text_batch = [d['title'] + tokenizer.sep_token + (d.get('abstract') or '') for d in batch]
-    inputs = tokenizer(text_batch, padding=True, truncation=True, return_tensors="pt", max_length=512)
-    inputs = {k: v.to(device) for k, v in inputs.items()}
-    with torch.no_grad():
-        outputs = model(**inputs)
-        embeddings = outputs.last_hidden_state[:, 0, :].cpu().numpy()
-    return embeddings
+    # Dynamic batch sizing to avoid OpenAI rate limits
+    batch_size = EMBEDDING_BATCH_SIZE  # Start with configured batch size
+    all_embeddings = []
+    
+    for i in range(0, len(texts), batch_size):
+        batch_texts = texts[i:i + batch_size]
+        batch = [{"title": t, "abstract": ""} for t in batch_texts]
+        text_batch = [d['title'] + tokenizer.sep_token + (d.get('abstract') or '') for d in batch]
+        
+        # Estimate token count for this batch
+        estimated_tokens = sum(len(t.split()) * 1.3 for t in batch_texts)  # Rough estimate
+        log(f"Processing batch {i//batch_size + 1}: {len(batch_texts)} texts, ~{estimated_tokens:.0f} tokens")
+        
+        inputs = tokenizer(text_batch, padding=True, truncation=True, return_tensors="pt", max_length=512)
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        
+        # Monitor GPU memory before processing
+        if device.type == 'cuda':
+            gpu_memory_before = torch.cuda.memory_allocated() / 1024**2
+            log(f"GPU Memory before batch {i//batch_size + 1}: {gpu_memory_before:.1f}MB")
+        
+        with torch.no_grad():
+            outputs = model(**inputs)
+            embeddings = outputs.last_hidden_state[:, 0, :].cpu().numpy()
+            all_embeddings.extend(embeddings)
+        
+        # Clear GPU cache after each batch
+        if device.type == 'cuda':
+            torch.cuda.empty_cache()
+            gpu_memory_after = torch.cuda.memory_allocated() / 1024**2
+            log(f"GPU Memory after batch {i//batch_size + 1}: {gpu_memory_after:.1f}MB")
+        
+        # Add small delay between batches to avoid rate limits
+        time.sleep(0.1)  # 100ms delay between batches
+    
+    return all_embeddings
 
 async def specter2_embed_async(texts):
     loop = asyncio.get_event_loop()
@@ -123,6 +183,19 @@ async def extract_structured_content(filepath: str, output_dir: str = OUTPUT_FOL
     if not os.path.exists(filepath):
         log(f"File not found: {filepath}")
         return None
+    
+    # Check if output already exists to avoid reprocessing
+    base = os.path.splitext(os.path.basename(filepath))[0]
+    output_dir_path = os.path.join(output_dir, base)
+    auto_dir_path = os.path.join(output_dir_path, 'auto')
+    
+    if os.path.exists(auto_dir_path):
+        existing_json_files = glob.glob(os.path.join(auto_dir_path, '*.json'))
+        if existing_json_files:
+            log(f"Output already exists for {filepath}, skipping processing")
+            # Still try to parse existing output
+            pass
+    
     os.makedirs(output_dir, exist_ok=True)
     with stage("RAGAnything init"):
         rag = RAGAnything(
@@ -132,21 +205,67 @@ async def extract_structured_content(filepath: str, output_dir: str = OUTPUT_FOL
         )
     try:
         with stage("Process document (parse/convert/extract)"):
-            await rag.process_document_complete(
-                file_path=filepath,
-                output_dir=output_dir,
-                parse_method="auto"
-            )
+            # Add retry logic with timeout
+            for attempt in range(MAX_RETRIES + 1):
+                try:
+                    log(f"Processing attempt {attempt + 1}/{MAX_RETRIES + 1} for {filepath}")
+                    
+                    # Set a reasonable timeout for document processing
+                    await asyncio.wait_for(
+                        rag.process_document_complete(
+                            file_path=filepath,
+                            output_dir=output_dir,
+                            parse_method="auto"
+                        ),
+                        timeout=PROCESSING_TIMEOUT
+                    )
+                    log(f"Processing completed successfully on attempt {attempt + 1}")
+                    break  # Success, exit retry loop
+                    
+                except asyncio.TimeoutError:
+                    log(f"Processing timed out after {PROCESSING_TIMEOUT} seconds for {filepath} (attempt {attempt + 1})")
+                    if attempt == MAX_RETRIES:
+                        log(f"Max retries reached for {filepath}")
+                        return None
+                    continue
+                    
+                except Exception as e:
+                    log(f"Error during document processing (attempt {attempt + 1}): {e}")
+                    if attempt == MAX_RETRIES:
+                        log(f"Max retries reached for {filepath}")
+                        return None
+                    continue
         log(f"Files in output directory after processing: {os.listdir(output_dir)}")
         base = os.path.splitext(os.path.basename(filepath))[0]
         output_dir_path = os.path.join(output_dir, base)
+        
+        # Check for auto/ subdirectory specifically
+        auto_dir_path = os.path.join(output_dir_path, 'auto')
+        log(f"Looking for JSON files in: {output_dir_path}")
+        log(f"Also checking auto subdirectory: {auto_dir_path}")
+        
         # Recursively search for any .json file in the output directory
         with stage("Discover & parse JSON output"):
-            json_files = glob.glob(os.path.join(output_dir_path, '**', '*.json'), recursive=True)
-            log(f"Found JSON files: {json_files}")
+            # First try the auto/ subdirectory specifically
+            if os.path.exists(auto_dir_path):
+                json_files = glob.glob(os.path.join(auto_dir_path, '*.json'))
+                log(f"Found JSON files in auto/ directory: {json_files}")
+            else:
+                # Fallback to recursive search
+                json_files = glob.glob(os.path.join(output_dir_path, '**', '*.json'), recursive=True)
+                log(f"Found JSON files (recursive search): {json_files}")
+            
             if json_files:
+                # Prefer content_list.json if available
+                content_list_files = [f for f in json_files if 'content_list.json' in f]
+                if content_list_files:
+                    json_file = content_list_files[0]
+                else:
+                    json_file = json_files[0]
+                
+                log(f"Using JSON file: {json_file}")
                 try:
-                    with open(json_files[0], "r", encoding="utf-8") as f:
+                    with open(json_file, "r", encoding="utf-8") as f:
                         raw_content = f.read()
                         try:
                             result = json.loads(raw_content)
@@ -159,7 +278,7 @@ async def extract_structured_content(filepath: str, output_dir: str = OUTPUT_FOL
                     log(f"Error reading/parsing JSON output for {filepath}: {e}")
                     return None
             else:
-                log(f"No JSON files found in {output_dir_path}")
+                log(f"No JSON files found in {output_dir_path} or {auto_dir_path}")
                 return None
     except Exception as e:
         log(f"Error extracting structured content from {filepath}: {e}")
